@@ -1,0 +1,104 @@
+/* Chart styles */
+
+/* Chart container */
+.chart-container {
+  height: calc(100% - 50px); /* Adjust based on your calculations */
+}
+
+/* Chart canvas */
+#top-drivers-chart {
+  width: 100%; /* make the chart canvas width 100% of its container */
+  height: 100%; /* make the chart canvas height 100% of its container */
+}
+
+
+/* Chart title */
+.chart-title {
+  font-size: 25px; /* set the chart title font size to 18px */
+  font-weight: bold; /* make the chart title bold */
+  margin-bottom: 10px; /* add some margin bottom to the chart title */
+}
+
+/* Chart legend */
+.chart-legend {
+  font-size: 14px; /* set the chart legend font size to 14px */
+  padding: 10px; /* add some padding around the chart legend */
+  border: 1px solid #ddd; /* add a light gray border around the chart legend */
+  border-radius: 10px; /* add a slight border radius to the chart legend */
+  background-color: #f9f9f9; /* set the chart legend background color to a light gray */
+}
+
+/* Chart grid lines */
+.chart-grid {
+  stroke: #ddd; /* set the chart grid line color to a light gray */
+  stroke-width: 1; /* set the chart grid line width to 1px */
+}
+
+/* Chart bars */
+.chart-bar {
+  fill: #4CAF50; /* set the chart bar fill color to a greenish color */
+  stroke: #333; /* set the chart bar stroke color to a dark gray */
+  stroke-width: 2; /* set the chart bar stroke width to 2px */
+}
+
+/* Chart hover effects */
+.chart-bar:hover {
+  fill: #3e8e41; /* set the chart bar hover fill color to a darker greenish color */
+  cursor: pointer; /* add a pointer cursor on hover */
+}
+
+/* Chart tooltip */
+.chart-tooltip {
+  font-size: 14px; /* set the chart tooltip font size to 14px */
+  background-color: #fff; /* set the chart tooltip background color to white */
+  border: 1px solid #ddd; /* add a light gray border around the chart tooltip */
+  border-radius: 10px; /* add a slight border radius to the chart tooltip */
+  padding: 10px; /* add some padding around the chart tooltip */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* add a subtle box shadow to the chart tooltip */
+}
+
+.kard {
+  padding: 20px; /* Adjust padding for better fit */
+}
+
+.mb-3 {
+  margin-bottom: 1.5rem; /* add a margin bottom of 1.5rem (16px) */
+}
+
+.dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 400px; /* increased width */
+  height: 650px; /* increased height */
+}
+
+.dialog-content {
+  padding: 20px;
+}
+
+.close-btn {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background-color: #3e8e41;
+}
+
+.dialog img {
+  width: 100px;
+  height: 100px;
+  border-radius: 80%;
+  margin: 20px;
+}

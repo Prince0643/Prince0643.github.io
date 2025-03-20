@@ -1,0 +1,109 @@
+  String? _origin;
+  String? _destination;
+  String? _landmark;
+  String? _fare;
+  String? _distance;
+
+
+Positioned(
+              top: 10,
+              left: 10,
+              child: Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Rounded corners
+                ),
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
+                    children: [
+                      Text('Origin: $_origin', style: TextStyle(fontSize: 16, color: Colors.black)),
+                      SizedBox(height: 8), // Space between texts
+                      Text('Destination: $_destination', style: TextStyle(fontSize: 16, color: Colors.black)),
+                      SizedBox(height: 8),
+                      Text('Landmark: $_landmark', style: TextStyle(fontSize: 16, color: Colors.black)),
+                      SizedBox(height: 8),
+                      Text(_fareText, style: TextStyle(fontSize: 16, color: Colors.black)),
+                      SizedBox(height: 8),
+                      Text(_distanceText, style: TextStyle(fontSize: 16, color: Colors.black)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+
+
+
+
+
+Future<void> _checkOngoingRide() async {
+    final database = FirebaseDatabase.instance.ref();
+    final user = auth.currentUser ;
+
+    if (user != null && _userName != null) { // Ensure user and userName are not null
+      print('Fetching rides from path: rides/$_userName');
+
+      // Fetch rides using the user's display name
+      final ridesSnapshot = await database.child('rides').child(_userName!).get();
+
+      // Print the result of the ridesSnapshot
+      if (ridesSnapshot.exists) {
+        print('Rides found for user: ${ridesSnapshot.value}');
+
+        bool ongoingRideFound = false;
+
+        // Loop through each ride
+        for (var ride in ridesSnapshot.children) {
+          final rideData = ride.value as Map<dynamic, dynamic>;
+          final currentStatus = rideData['completion_status'];
+
+          // Print the current status and ride data for debugging
+          print('Current ride status: $currentStatus');
+          print('Ride data: $rideData');
+
+          // Check if the ride is ongoing (not completed, failed, or cancelled)
+          if (currentStatus != 'completed' && currentStatus != 'failed' && currentStatus != 'cancelled') {
+            ongoingRideFound = true;
+
+            // Update the UI based on the ride status
+            setState(() {
+              if (currentStatus == 'waiting') {
+                _isBooking = true;
+                _isCancelButtonVisible = true;
+
+                // Access and set the relevant ride details
+                _origin = rideData['origin'];
+                _destination = rideData['destination'];
+                _landmark = rideData['landmark'];
+                _fare = rideData['fare'];
+                _distance = rideData['distance'];
+
+                // Update the fare and distance text for display
+                _fareText = 'Fare: ${_fare}';
+                _distanceText = 'Distance: ${_distance} km';
+              } else if (currentStatus == 'on the way') {
+                _isOnTheWayCardVisible = true;
+                _driverName = rideData['driver_name'];
+                _plate = rideData['driver_plate'];
+                _startTrackingUserLocation();
+              }
+            });
+
+            // Break the loop if we found an ongoing ride
+            break;
+          }
+        }
+
+        if (!ongoingRideFound) {
+          print('No ongoing rides found for user.');
+        }
+      } else {
+        print('No rides found for user.');
+      }
+    } else {
+      print('User  is not authenticated or user name is not set.');
+    }
+  }

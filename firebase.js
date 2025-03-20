@@ -30,7 +30,7 @@ function createAdminNode() {
   localStorage.setItem('username', username);
 
   alert('Admin created successfully!');
-  window.location.href = 'index.html';
+  window.location.href = 'dashboard.html';
 }
 
 function loginAdmin() {

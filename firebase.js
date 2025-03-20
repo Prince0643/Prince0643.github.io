@@ -47,7 +47,7 @@ function loginAdmin() {
         localStorage.setItem('username', admin.val().username);
 
         alert('Login successful!');
-        window.location.href = 'index.html';
+        window.location.href = 'dashboard.html';
       }
     });
   });

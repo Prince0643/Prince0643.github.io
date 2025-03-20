@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/staradmin-2-free.iml" filepath="$PROJECT_DIR$/.idea/staradmin-2-free.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/dist.iml" filepath="$PROJECT_DIR$/.idea/dist.iml" />
     </modules>
   </component>
 </project>

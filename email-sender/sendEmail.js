@@ -1,40 +1,7 @@
-//const nodemailer = require('nodemailer');
-//
-//// Create a transporter object using SMTP
-//const transporter = nodemailer.createTransport({
-//    host: 'smtp.gmail.com', // Replace with your SMTP server
-//    port: 587, // Replace with your SMTP port
-//    secure: false, // true for 465, false for other ports
-//    auth: {
-//        user: 'tolentinochristian89@gmail.com', // Replace with your email
-//        pass: 'pmhu ieju vixh ozmy' // Replace with your email password
-//    }
-//});
-//
-//// Function to send email
-//function sendEmail(to, subject, text) {
-//    const mailOptions = {
-//        from: '"Your Name" <tolentinochristian89@gmail.com>', // sender address
-//        to: to, // list of receivers
-//        subject: subject, // Subject line
-//        text: text, // plain text body
-//        // html: '<b>Hello world?</b>' // html body (optional)
-//    };
-//
-//    transporter.sendMail(mailOptions, (error, info) => {
-//        if (error) {
-//            return console.log('Error occurred: ' + error.message);
-//        }
-//        console.log('Message sent: %s', info.messageId);
-//    });
-//}
-//
-//// Example usage
-//sendEmail('ladyshorty05@gmail.com', 'Test Subject', 'This is a test email sent from Node.js!');
-
 const express = require('express');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
+const cron = require('node-cron');
 
 const app = express();
 app.use(cors());
@@ -46,13 +13,12 @@ const transporter = nodemailer.createTransport({
     secure: false,
     auth: {
         user: 'tolentinochristian89@gmail.com',
-        pass: 'pmhu ieju vixh ozmy'
+        pass: 'pmhu ieju vixh ozmy' // Consider using environment variables for sensitive data
     }
 });
 
-app.post('/send-email', (req, res) => {
-    const { to, subject, text } = req.body;
-
+// Function to send email
+const sendEmail = (to, subject, text) => {
     const mailOptions = {
         from: '"NLUCycle" <tolentinochristian89@gmail.com>',
         to: to,
@@ -62,14 +28,28 @@ app.post('/send-email', (req, res) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            return res.status(500).send('Error occurred: ' + error.message);
+            console.error('Error occurred: ' + error.message);
+        } else {
+            console.log('Message sent: ' + info.messageId);
         }
-        res.status(200).send('Message sent: ' + info.messageId);
     });
+};
+
+// Endpoint to send email
+app.post('/send-email', (req, res) => {
+    const { to, subject, text } = req.body;
+    sendEmail(to, subject, text);
+    res.status(200).send('Email sending initiated.');
+});
+
+// Schedule email sending every hour
+cron.schedule('0 * * * *', () => {
+    console.log('Running scheduled email task...');
+    // Example: Send an email to a specific recipient
+    sendEmail('recipient@example.com', 'Scheduled Email', 'This is a scheduled email sent every hour.');
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
